@@ -1,0 +1,25 @@
+version: '3'
+services:
+    #Postgres
+    postgres:
+      image: 'postgres:latest'
+      environment: 
+      - POSTGRES_PASSWORD=postgres_password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=simple_blog_api
+    
+    #Simple_api
+    simple-blog-api:
+        depends_on:
+          - postgres
+        #restart: always
+        image: apatnala/simple_blog_api
+        build: .
+        ports: 
+          - "3000:3000"
+        environment:
+        - POSTGRES_HOST=postgres
+        - POSTGRES_PORT=5432
+        - POSTGRES_USERNAME=postgres
+        - POSTGRES_PASSWORD=postgres_password
+        - POSTGRES_DB=simple_blog_api
