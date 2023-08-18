@@ -1,0 +1,12 @@
+-- Creating a table
+CREATE TABLE episodes (name STRING, line STRING)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' TBLPROPERTIES ("skip.header.line.count"="2");
+
+-- Load all 3 text files into the table
+LOCAL DATA LOCAL INPATH '/root/inputs/episodeIV_dialouges.txt' INTO TABLE episodes;
+LOCAL DATA LOCAL INPATH '/root/inputs/episodeV_dialouges.txt' INTO TABLE episodes;
+LOCAL DATA LOCAL INPATH '/root/inputs/eposideVI_dialouges.txt' INTO TABLE episodes;
+
+-- Generate output and export it 
+INSERT OVERWRITE DIRECTORY '/root' ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+SELECT name, COUNT(name) AS no_of_lines from episodes GROUP BY name ORDER BY no_of_lines DESC;
